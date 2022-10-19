@@ -1,6 +1,17 @@
-import Card from "./components/Card";
-import Drawer from "./components/Drawer";
-import Header from "./components/Header";
+import Card from "./components/Card/Card";
+import Drawer from "./components/Drawer/Drawer";
+import Header from "./components/Header/Header";
+
+const arr = [
+  {
+    name: "Мужские Кроссовки Nike Blazer Mid Suede",
+    price: "12 999",
+    img: "1",
+  },
+  { name: "Мужские Кроссовки Nike Air Max 270", price: "12 999", img: "2" },
+  { name: "Мужские Кроссовки Nike Blazer Mid Suede", price: "8 499", img: "3" },
+  { name: "Кроссовки Puma X Aka Boku Future Rider", price: "8 999", img: "4" },
+];
 
 function App() {
   return (
@@ -17,82 +28,9 @@ function App() {
         </div>
 
         <div className='d-flex'>
-          <Card />
-          <div className='card'>
-            <img
-              width={133}
-              height={112}
-              src='img/sneakers/1.jpg'
-              alt='sneakers'
-            />
-            <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-            <div className='d-flex justify-between align-center'>
-              <div className='d-flex flex-column'>
-                <span>Цена:</span>
-                <b>12 999 руб.</b>
-              </div>
-              <div>
-                <button className='button'>
-                  <img
-                    width={11}
-                    height={11}
-                    src='img/svg/plus.svg'
-                    alt='plus'
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className='card'>
-            <img
-              width={133}
-              height={112}
-              src='img/sneakers/3.jpg'
-              alt='sneakers'
-            />
-            <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-            <div className='d-flex justify-between align-center'>
-              <div className='d-flex flex-column'>
-                <span>Цена:</span>
-                <b>12 999 руб.</b>
-              </div>
-              <div>
-                <button className='button'>
-                  <img
-                    width={11}
-                    height={11}
-                    src='img/svg/plus.svg'
-                    alt='plus'
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className='card'>
-            <img
-              width={133}
-              height={112}
-              src='img/sneakers/4.jpg'
-              alt='sneakers'
-            />
-            <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
-            <div className='d-flex justify-between align-center'>
-              <div className='d-flex flex-column'>
-                <span>Цена:</span>
-                <b>12 999 руб.</b>
-              </div>
-              <div>
-                <button className='button'>
-                  <img
-                    width={11}
-                    height={11}
-                    src='img/svg/plus.svg'
-                    alt='plus'
-                  />
-                </button>
-              </div>
-            </div>
-          </div>
+          {arr.map((item) => (
+            <Card name={item.name} price={item.price} img={item.img} />
+          ))}
         </div>
       </div>
     </div>

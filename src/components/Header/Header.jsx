@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./Header.module.scss";
 const Header = () => {
   return (
     <header className='d-flex justify-between align-center'>

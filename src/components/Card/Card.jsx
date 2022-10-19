@@ -1,17 +1,22 @@
 import React from "react";
-
-const Card = () => {
+import s from "./Card.module.scss";
+const Card = ({ name, price, img }) => {
   return (
-    <div className='card'>
+    <div className={s.card}>
       <div>
-        <img className='favorite' src='/img/svg/like.svg' alt='like' />
+        <img className={s.favorite} src='/img/svg/like.svg' alt='like' />
       </div>
-      <img width={133} height={112} src='img/sneakers/2.jpg' alt='sneakers' />
-      <h5>Мужские Кроссовки Nike Blazer Mid Suede</h5>
+      <img
+        width={133}
+        height={112}
+        src={`img/sneakers/${img}.jpg`}
+        alt='sneakers'
+      />
+      <h5>{name}</h5>
       <div className='d-flex justify-between align-center'>
         <div className='d-flex flex-column'>
           <span>Цена:</span>
-          <b>12 999 руб.</b>
+          <b>{price} руб.</b>
         </div>
         <div>
           <button className='button'>
