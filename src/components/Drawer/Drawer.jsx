@@ -1,34 +1,37 @@
 import React from "react";
 import s from "./Drawer.module.scss";
-const Drawer = () => {
+const Drawer = ({ isClose, items = [] }) => {
   return (
-    <div style={{ display: "none" }} className={s.overlay}>
+    <div className={s.overlay} onClick={isClose}>
       <div className={s.drawer}>
         <div>
           <h2 className='mb-30'>
             Корзина
             <img
+              onClick={isClose}
               className={s.removeBtn}
               src='/img/svg/btnClose.svg'
               alt='btnClose'
             />
           </h2>
           <div className={s.items}>
-            <div className={`${s.cartItem} d-flex align-center mb-20`}>
-              <div
-                style={{ backgroundImage: "url(img/sneakers/3.jpg)" }}
-                className={s.cartItemImage}
-              ></div>
-              <div className='mr-20 flex'>
-                <p className='mb-5'>Мужские Кроссовки Nike Blazer Mid Suede</p>
-                <b>12 999 руб.</b>
+            {items.map((item) => (
+              <div className={`${s.cartItem} d-flex align-center mb-20`}>
+                <div
+                  style={{ backgroundImage: `url(${item.img})` }}
+                  className={s.cartItemImage}
+                ></div>
+                <div className='mr-20 flex'>
+                  <p className='mb-5'>{item.name}</p>
+                  <b>{item.price}руб.</b>
+                </div>
+                <img
+                  className={s.removeBtn}
+                  src='/img/svg/btnClose.svg'
+                  alt='btnClose'
+                />
               </div>
-              <img
-                className={s.removeBtn}
-                src='/img/svg/btnClose.svg'
-                alt='btnClose'
-              />
-            </div>
+            ))}
           </div>
         </div>
         <div className={s.CartTotalBlock}>

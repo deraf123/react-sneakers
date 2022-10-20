@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.module.scss";
-const Header = () => {
+const Header = ({ isShowDrawer }) => {
   return (
     <header className='d-flex justify-between align-center'>
       <div className='d-flex align-center'>
@@ -14,7 +14,9 @@ const Header = () => {
         <ul className='d-flex'>
           <li className='mr-30'>
             <img width={18} height={18} src='/img/svg/cart.svg' alt='cart' />
-            <span>1205 руб.</span>
+            <span onClick={isShowDrawer} className='cu-p'>
+              1205 руб.
+            </span>
           </li>
           <li>
             <img width={18} height={18} src='/img/svg/user.svg' alt='user' />

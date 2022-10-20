@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import s from "./Card.module.scss";
-const Card = ({ name, price, img }) => {
+const Card = ({ name, price, img, onClickFavorite, onPlus }) => {
+  const [isAdded, setIsAdded] = useState(false);
+
+  const onClickPlus = () => {
+    onPlus({ name, price, img });
+    setIsAdded(!isAdded);
+  };
   return (
     <div className={s.card}>
       <div>
-        <img className={s.favorite} src='/img/svg/like.svg' alt='like' />
+        <img
+          className={s.favorite}
+          src='/img/svg/like.svg'
+          alt='like'
+          onClick={() => onClickFavorite()}
+        />
       </div>
       <img
+        className='ml-15'
         width={133}
         height={112}
-        src={`img/sneakers/${img}.jpg`}
+        src={img}
         alt='sneakers'
       />
       <h5>{name}</h5>
@@ -18,11 +30,14 @@ const Card = ({ name, price, img }) => {
           <span>Цена:</span>
           <b>{price} руб.</b>
         </div>
-        <div>
-          <button className='button'>
-            <img width={11} height={11} src='img/svg/plus.svg' alt='plus' />
-          </button>
-        </div>
+        <img
+          onClick={onClickPlus}
+          className={s.plus}
+          width={32}
+          height={32}
+          src={isAdded ? "img/svg/btnCheked.svg" : "img/svg/btnPlus.svg"}
+          alt='plus'
+        />
       </div>
     </div>
   );
