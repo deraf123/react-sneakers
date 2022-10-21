@@ -18,15 +18,11 @@ body {
   margin: 50px auto;
 }
 
-
-
 .content {
   h1 {
     margin: 0;
   }
 }
-
-
 
 .button {
   background: #ffffff;
@@ -42,6 +38,14 @@ body {
   border: 1px solid #f3f3f3;
   border-radius: 10px;
   padding: 0 15px;
+  position: relative;
+  .clear {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 13px;
+    right: 15px;
+  }
   input {
     border: 0;
     padding: 13px;
@@ -49,4 +53,3 @@ body {
     width: 200px;
   }
 }
-

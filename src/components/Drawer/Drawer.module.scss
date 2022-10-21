@@ -3,7 +3,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 110%;
   background-color: rgba(0, 0, 0, 0.1);
   z-index: 1;
 }
@@ -22,6 +22,9 @@
   .items {
     overflow: auto;
     margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
   }
 
   h2 {
@@ -38,7 +41,6 @@
     }
   }
 }
-
 .CartTotalBlock {
   ul {
     margin-bottom: 40px !important;
@@ -119,4 +121,33 @@
       opacity: 1;
     }
   }
+}
+
+.cartEmpty {
+  text-align: center;
+  p {
+    width: 280px;
+    line-height: 24px;
+  }
+  .greenButton {
+    width: 245px;
+    margin-top: 20px;
+    &:hover {
+      .greenButtonArrow {
+        transform: rotate(180deg) translateX(3px);
+      }
+    }
+  }
+}
+.greenButton:hover {
+  .greenButtonArrow {
+    transform: rotate(180deg) translateX(3px);
+  }
+}
+.greenButtonArrow {
+  position: relative;
+  top: 1px;
+  transform: rotate(180deg);
+  margin-right: 15px;
+  transition: transform 0.15s ease-in-out;
 }
