@@ -1,14 +1,41 @@
-import React, { useContext, useState } from "react";
-import AppContext from "../../context";
+import axios from "axios";
+import React, { useState } from "react";
+import { useCart } from "../../hooks/useCart";
+
 import Info from "../Info/Info";
 import s from "./Drawer.module.scss";
-const Drawer = ({ isClose, items = [], onRemove }) => {
-  const { setCartItems } = useContext(AppContext);
-  const [orderComplete, setOrderComplete] = useState(false);
 
-  const onClickOrdrer = () => {
-    setOrderComplete(true);
-    setCartItems([]);
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const Drawer = ({ isClose, items = [], onRemove }) => {
+  const { cartItems, setCartItems, totalPrice } = useCart();
+  const [orderId, setOrderId] = useState(null);
+  const [orderComplete, setOrderComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true);
+      const { data } = await axios.post(
+        "https://63501d8278563c1d82b99cee.mockapi.io/order",
+        {
+          items: cartItems,
+        }
+      );
+      setOrderId(data.id);
+      setOrderComplete(true);
+      setCartItems([]);
+
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        await axios.delete(
+          `https://63501d8278563c1d82b99cee.mockapi.io/cart/${item.id}`
+        );
+        await delay(1000);
+      }
+    } catch (error) {
+      alert("Ошибка при создании заказа :(");
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -53,15 +80,19 @@ const Drawer = ({ isClose, items = [], onRemove }) => {
                 <li>
                   <span>Итого:</span>
                   <div></div>
-                  <b>21 498 руб.</b>
+                  <b>{totalPrice} руб.</b>
                 </li>
                 <li>
                   <span>Налог 5%</span>
                   <div></div>
-                  <b>1074 руб.</b>
+                  <b>{(totalPrice / 100) * 5} руб.</b>
                 </li>
               </ul>
-              <button className={s.greenButton} onClick={onClickOrdrer}>
+              <button
+                disabled={isLoading}
+                className={s.greenButton}
+                onClick={onClickOrder}
+              >
                 Оформить Заказ
                 <img src='img/svg/arrow.svg' alt='arrow' />
               </button>
@@ -72,7 +103,7 @@ const Drawer = ({ isClose, items = [], onRemove }) => {
             title={orderComplete ? "Заказ Оформлен!" : "Корзина Пустая"}
             description={
               orderComplete
-                ? "Ваш заказ #18 скоро будет передан курьерской доставке"
+                ? `Ваш заказ #${orderId} скоро будет передан курьерской доставке`
                 : "Добавте хотяб одну пару кроссовок, чтобы сделать заказ."
             }
             image={

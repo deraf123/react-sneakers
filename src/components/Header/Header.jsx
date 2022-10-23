@@ -1,7 +1,11 @@
 import React from "react";
 import "./Header.module.scss";
 import { Link } from "react-router-dom";
+import { useCart } from "../../hooks/useCart";
+
 const Header = ({ isShowDrawer }) => {
+  const { totalPrice } = useCart();
+
   return (
     <header className='d-flex justify-between align-center'>
       <Link to='/'>
@@ -18,7 +22,7 @@ const Header = ({ isShowDrawer }) => {
           <li className='mr-30'>
             <img width={18} height={18} src='/img/svg/cart.svg' alt='cart' />
             <span onClick={isShowDrawer} className='cu-p'>
-              1205 руб.
+              {totalPrice} руб.
             </span>
           </li>
           <li className='cu-p mr-20'>
@@ -33,7 +37,9 @@ const Header = ({ isShowDrawer }) => {
             </Link>
           </li>
           <li>
-            <img width={18} height={18} src='/img/svg/user.svg' alt='user' />
+            <Link to='/orders'>
+              <img width={18} height={18} src='/img/svg/user.svg' alt='user' />
+            </Link>
           </li>
         </ul>
       </div>

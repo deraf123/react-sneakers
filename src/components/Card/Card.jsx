@@ -42,12 +42,14 @@ const Card = ({
       ) : (
         <>
           <div>
-            <img
-              className={s.favorite}
-              src={isFavorite ? "img/svg/unLike.svg" : "img/svg/like.svg"}
-              alt='like'
-              onClick={() => onClickFavorite()}
-            />
+            {onFavorite && (
+              <img
+                className={s.favorite}
+                src={isFavorite ? "img/svg/unLike.svg" : "img/svg/like.svg"}
+                alt='like'
+                onClick={() => onClickFavorite()}
+              />
+            )}
           </div>
           <img
             className='ml-15'
@@ -62,18 +64,20 @@ const Card = ({
               <span>Цена:</span>
               <b>{price} руб.</b>
             </div>
-            <img
-              onClick={onClickPlus}
-              className={s.plus}
-              width={32}
-              height={32}
-              src={
-                isItemAdded(id)
-                  ? "img/svg/btnCheked.svg"
-                  : "img/svg/btnPlus.svg"
-              }
-              alt='plus'
-            />
+            {onPlus && (
+              <img
+                onClick={onClickPlus}
+                className={s.plus}
+                width={32}
+                height={32}
+                src={
+                  isItemAdded(id)
+                    ? "img/svg/btnCheked.svg"
+                    : "img/svg/btnPlus.svg"
+                }
+                alt='plus'
+              />
+            )}
           </div>
         </>
       )}

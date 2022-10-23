@@ -7,6 +7,7 @@ import Header from "./components/Header/Header";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import AppContext from "./context";
+import Orders from "./pages/Orders";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -15,7 +16,6 @@ function App() {
   const [searchValue, setSearchValue] = useState("");
   const [isShowCart, setIsShowCart] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     async function fetchData() {
       const cartResponse = await axios.get(
@@ -94,18 +94,18 @@ function App() {
         favorits,
         isItemAdded,
         onAddToFavorite,
+        onAddToCart,
         setIsShowCart,
         setCartItems,
       }}
     >
       <div className='wrapper clear'>
-        {isShowCart && (
-          <Drawer
-            isClose={() => setIsShowCart(false)}
-            items={cartItems}
-            onRemove={onRemoveItem}
-          />
-        )}
+        <Drawer
+          isClose={() => setIsShowCart(false)}
+          items={cartItems}
+          onRemove={onRemoveItem}
+          opened={isShowCart}
+        />
 
         <Header isShowDrawer={() => setIsShowCart(true)} />
         <Routes>
@@ -125,6 +125,7 @@ function App() {
             }
           ></Route>
           <Route path='/favorites' element={<Favorites />}></Route>
+          <Route path='/orders' element={<Orders />}></Route>
         </Routes>
       </div>
     </AppContext.Provider>
