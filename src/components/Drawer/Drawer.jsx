@@ -7,7 +7,7 @@ import s from "./Drawer.module.scss";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const Drawer = ({ isClose, items = [], onRemove }) => {
+const Drawer = ({ isClose, items = [], onRemove, opened }) => {
   const { cartItems, setCartItems, totalPrice } = useCart();
   const [orderId, setOrderId] = useState(null);
   const [orderComplete, setOrderComplete] = useState(false);
@@ -39,7 +39,7 @@ const Drawer = ({ isClose, items = [], onRemove }) => {
   };
 
   return (
-    <div className={s.overlay}>
+    <div className={`${s.overlay} ${opened ? s.overlayVisable : ""}`}>
       <div className={s.drawer}>
         <h2 className='mb-30'>
           Корзина

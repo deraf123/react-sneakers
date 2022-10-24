@@ -18,38 +18,70 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     async function fetchData() {
-      const cartResponse = await axios.get(
-        "https://63501d8278563c1d82b99cee.mockapi.io/cart"
-      );
-      const favoritesResponse = await axios.get(
-        "https://63501d8278563c1d82b99cee.mockapi.io/favorites"
-      );
-      const itemsResponse = await axios.get(
-        "https://63501d8278563c1d82b99cee.mockapi.io/items"
-      );
-      setIsLoading(false);
-      setCartItems(cartResponse.data);
-      setFavorites(favoritesResponse.data);
-      setItems(itemsResponse.data);
+      try {
+        const [cartResponse, favoritesResponse, itemsResponse] =
+          await Promise.all([
+            axios.get("https://63501d8278563c1d82b99cee.mockapi.io/cart"),
+            axios.get("https://63501d8278563c1d82b99cee.mockapi.io/favorites"),
+            axios.get("https://63501d8278563c1d82b99cee.mockapi.io/items"),
+          ]);
+        setIsLoading(false);
+        setCartItems(cartResponse.data);
+        setFavorites(favoritesResponse.data);
+        setItems(itemsResponse.data);
+      } catch (error) {
+        alert("Ошибка при запросе данных");
+        console.log(error);
+      }
     }
     fetchData();
   }, []);
   //Добавление Карты Товара
-  const onAddToCart = (obj) => {
+  const onAddToCart = async (obj) => {
     try {
-      if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+      const findItem = cartItems.find(
+        (item) => Number(item.parentId) === Number(obj.id)
+      );
+      if (findItem) {
         setCartItems((prev) =>
-          prev.filter((item) => Number(item.id) !== Number(obj.id))
+          prev.filter((item) => Number(item.parentId) !== Number(obj.id))
         );
-        axios.delete(
-          `https://63501d8278563c1d82b99cee.mockapi.io/cart/${obj.id}`
+        await axios.delete(
+          `https://63501d8278563c1d82b99cee.mockapi.io/cart/${findItem.id}`
         );
       } else {
-        axios.post("https://63501d8278563c1d82b99cee.mockapi.io/cart", obj);
         setCartItems((prevState) => [...prevState, obj]);
+        const { data } = await axios.post(
+          "https://63501d8278563c1d82b99cee.mockapi.io/cart",
+          obj
+        );
+        setCartItems((prevState) =>
+          prevState.map((item) => {
+            if (item.parentId === data.parentId) {
+              return {
+                ...item,
+                id: data.id,
+              };
+            } else return item;
+          })
+        );
       }
     } catch (error) {
       alert("Товар в корзину не добавлен ");
+    }
+  };
+  //Удаление Карты Товара
+  const onRemoveItem = (id) => {
+    try {
+      axios
+        .delete(`https://63501d8278563c1d82b99cee.mockapi.io/cart/${id}`)
+        .catch((error) => console.log("Fetch Error:", error));
+      setCartItems((prevState) =>
+        prevState.filter((item) => Number(item.id) !== Number(id))
+      );
+    } catch (error) {
+      console.log(error);
+      alert("Ошибка при удаении товара");
     }
   };
   //Добавление Фаворита
@@ -73,18 +105,12 @@ function App() {
       alert("Не Удалось добавить в фавориты");
     }
   };
-
-  const onRemoveItem = (id) => {
-    axios
-      .delete(`https://63501d8278563c1d82b99cee.mockapi.io/cart/${id}`)
-      .catch((error) => console.log("Fetch Error:", error));
-    setCartItems((prevState) => prevState.filter((item) => item.id !== id));
-  };
+  //Изменение Input
   const onChangeSearchInput = (event) => {
     setSearchValue(event.target.value);
   };
   const isItemAdded = (id) => {
-    return cartItems.some((obj) => Number(obj.id) === Number(id));
+    return cartItems.some((obj) => Number(obj.parentId) === Number(id));
   };
   return (
     <AppContext.Provider
